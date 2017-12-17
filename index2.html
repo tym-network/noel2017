@@ -1,0 +1,89 @@
+<!doctype html>
+
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>Joyeux Noël!</title>
+        <meta name="description" content="Merry Christmas 2017">
+        <meta name="author" content="Théotime Loiseau">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
+        <link rel="stylesheet" href="dist/styles.css">
+        <link rel="stylesheet" href="dist/photoswipe/photoswipe.css">
+        <link rel="stylesheet" href="dist/photoswipe/default-skin/default-skin.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Sacramento" rel="stylesheet">
+        <link rel="icon" type="image/png" sizes="32x32" href="dist/img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="dist/img/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="dist/img/favicon-16x16.png">
+    </head>
+
+    <body>
+        <div id="secondPage">
+            <div id="secondPageContainer">
+                <div id="place-description">
+                    <div id="place-description-intro">
+                        <h1>Soirée en Terre Incongrue</h1>
+                        <p>Voici une petite sélection de logements originaux que je vous propose. N'hésitez pas à suggérer d'autres idées si vous en avez envie!</p>
+                        <ul id="place-description-list">
+                        </ul>
+                    </div>
+                </div>
+                <div id="map"></div>
+            </div>
+            <div id="navigation">
+                <div id="navigation-container">
+                    <button type="button" class="arrow-button previous">
+                        <img class="arrow left-arrow" alt="Voir la destination précédente" src="dist/img/arrow.svg" />
+                    </button>
+                    <ul id="navigation-links">
+                        <li><button class="back-to-list" data-place=""><img alt="Back to place's list" src="dist/img/home.svg"/></button></li>
+                    </ul>
+                    <button type="button" class="arrow-button next">
+                        <img class="arrow right-arrow" alt="Voir la destination suivante" src="dist/img/arrow.svg" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="pswp__bg"></div>
+            <div class="pswp__scroll-wrap">
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+                <div class="pswp__ui pswp__ui--hidden">
+                    <div class="pswp__top-bar">
+                        <div class="pswp__counter"></div>
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
+                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                              <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                    </button>
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                    </button>
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
+        <script src="dist/scripts.js"></script>
+        <script async src="dist/photoswipe/photoswipe.min.js"></script>
+        <script async src="dist/photoswipe/photoswipe-ui-default.min.js"></script>
+    </body>
+</html>
