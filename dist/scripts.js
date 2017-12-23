@@ -1,10 +1,8 @@
-(function() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoieXVuYXBzcCIsImEiOiJjamIwdXgxN3U4ajZqMnFudzE3NnRrdTljIn0.ZcH3shQklHQ9_0_VLhk7pQ';
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v10'
-    });
+// https://www.mapbox.com/help/custom-markers-gl-js/
+// https://www.mapbox.com/mapbox-gl-js/example/flyto/
 
+
+(function() {
     var places = [
         {
             id: 1,
@@ -21,7 +19,9 @@
                 w: 954,
                 h: 716
             }],
-            url: "http://www.bambouturage.com/la-kerterre.html"
+            url: "http://www.bambouturage.com/la-kerterre.html",
+            lon: -1.16339210000001,
+            lat: 48.2811742
         },
         {
             id: 2,
@@ -43,7 +43,9 @@
                 w: 2048,
                 h: 1536
             }],
-            url: "http://ayourtenature.canalblog.com/"
+            url: "http://ayourtenature.canalblog.com/",
+            lon: 4.249141,
+            lat: 46.778166
         },
         {
             id: 3,
@@ -60,7 +62,9 @@
                 w: 1920,
                 h: 1280
             }],
-            url: "https://www.yourte-en-touraine.com/nos-yourtes"
+            url: "https://www.yourte-en-touraine.com/nos-yourtes",
+            lon: 0.8517579,
+            lat: 47.4517514
         },
         {
             id: 4,
@@ -77,7 +81,9 @@
                 w: 800,
                 h: 1000
             }],
-            url: "http://chouette-etoilee.fr/le-dome/"
+            url: "http://chouette-etoilee.fr/le-dome/",
+            lon: 3.9643653,
+            lat: 48.0753174
         },
         {
             id: 5,
@@ -94,7 +100,9 @@
                 w: 914,
                 h: 683
             }],
-            url: "https://www.airbnb.fr/rooms/10851698"
+            url: "https://www.airbnb.fr/rooms/10851698",
+            lon: -2.544923,
+            lat: 47.380844
         },
         {
             id: 6,
@@ -116,7 +124,9 @@
                 w: 1156,
                 h: 858
             }],
-            url: "https://www.fermedelapomme.com/roulotte-chambre-hotes-pays-auge/"
+            url: "https://www.fermedelapomme.com/roulotte-chambre-hotes-pays-auge/",
+            lon: 0.3362553,
+            lat: 49.208905
         },
         {
             id: 7,
@@ -133,7 +143,9 @@
                 w: 960,
                 h: 720
             }],
-            url: "https://fermedeboheme.jimdo.com/fran%C3%A7ais/la-roulotte/"
+            url: "https://fermedeboheme.jimdo.com/fran%C3%A7ais/la-roulotte/",
+            lon: -0.4078997,
+            lat: 48.326429
         },
         {
             id: 8,
@@ -150,7 +162,9 @@
                 w: 100,
                 h: 750
             }],
-            url: "http://www.roulottesdeshayes.fr/?p=19"
+            url: "http://www.roulottesdeshayes.fr/?p=19",
+            lon: 1.0015653,
+            lat: 47.524765
         },
         {
             id: 9,
@@ -182,7 +196,9 @@
                 w: 600,
                 h: 400
             }],
-            url: "http://nuitsinsolites.com/#hebergements"
+            url: "http://nuitsinsolites.com/#hebergements",
+            lon: 6.3121181,
+            lat: 48.0047743
         },
         {
             id: 10,
@@ -194,10 +210,39 @@
                 w: 800,
                 h: 600
             }],
-            url: "http://www.woody-park.com/tentes-suspendues/"
+            url: "http://www.woody-park.com/tentes-suspendues/",
+            lon: 0.3807663,
+            lat: 49.747389
         }
     ];
+
+    // var geojson = {
+    //     type: 'FeatureCollection',
+    //     features: []
+    // };
+
     var currentPlace = null;
+
+    // Create map
+    mapboxgl.accessToken = 'pk.eyJ1IjoieXVuYXBzcCIsImEiOiJjamIwdXgxN3U4ajZqMnFudzE3NnRrdTljIn0.ZcH3shQklHQ9_0_VLhk7pQ';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v9',
+        center: [2.197, 46.514],
+        zoom: 5
+    });
+
+    var getPlaceById = function(id) {
+        var place = null;
+        for (var i = 0, l = places.length; i < l; i++) {
+            if (places[i].id === id) {
+                place = places[i];
+                break;
+            }
+        }
+
+        return place;
+    };
 
     /**
      * Create the architecture about a place
@@ -216,6 +261,18 @@
         html += '</div>';
         return html;
     };
+
+    // var placeToGeoJSon = function(place) {
+    //     if ('lon' in place && 'lat' in place) {
+    //         geojson.features.push({
+    //             type: 'Feature',
+    //             geometry: {
+    //                 type: 'Point',
+    //                 coordinates: [place.lon, place.lat]
+    //             }
+    //         });
+    //     }
+    // }
 
     /**
      * Handle picture gallery
@@ -243,7 +300,12 @@
         var currentPlaceElement = null,
             currentNavigationLink = null,
             placeElement = null,
-            navigationLink = null;
+            navigationLink = null,
+            place;
+
+        if (id) {
+            place = getPlaceById(parseInt(id, 10));
+        }
 
         if (currentPlace) {
             currentPlaceElement = document.querySelector('#place-description-' + currentPlace);
@@ -266,6 +328,29 @@
         placeElement.setAttribute("style", "display: block;");
         navigationLink.classList.add("active");
         currentPlace = id;
+        map.resize();
+
+        map.flyTo({
+            center: [
+                place ? place.lon : 2.197,
+                place ? place.lat : 46.514
+            ],
+            zoom: place ? 9 : 5
+        });
+    };
+
+    var addMarker = function(place) {
+        // Create a HTML element for each feature
+        var el = document.createElement('div');
+        el.className = 'marker';
+        el.addEventListener('click', function() {
+            showPlace(place.id);
+        });
+
+        // make a marker for each feature and add to the map
+        new mapboxgl.Marker(el)
+            .setLngLat([place.lon, place.lat])
+            .addTo(map);
     };
 
     var nextPlace = function() {
@@ -305,6 +390,9 @@
         // Add link in navigation
         navigationLinks = document.querySelector('#navigation-links');
         navigationLinks.innerHTML += '<li><button type="button" data-place="' + place.id + '"></button></li>';
+
+        // Fill Geojson
+        addMarker(place);
     }
 
     // Handle button to see each place's description
@@ -332,6 +420,9 @@
             showPlace(placeId);
         });
     }
+
+    map.resize();
+
     document.querySelector('#navigation .arrow-button.previous').addEventListener('click', previousPlace);
     document.querySelector('#navigation .arrow-button.next').addEventListener('click', nextPlace);
 }());

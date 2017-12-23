@@ -120,7 +120,20 @@ button.primary:hover, a.button.primary:hover {
 }
 
 #secondPage #map {
+    position: fixed;
     width: 50%;
+    left: 50%;
+    height: 100%;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+}
+
+#secondPage #map .marker {
+    background: url('img/pin.svg') no-repeat;
+    background-size: contain;
+    width: 20px;
+    height: 29px;
+    cursor: pointer;
 }
 
 #secondPage #navigation {
@@ -160,6 +173,7 @@ button.primary:hover, a.button.primary:hover {
 }
 
 #secondPage #navigation-links button {
+    position: relative;
     cursor: pointer;
     background: #d1d1d1;
     border: none;
@@ -170,6 +184,19 @@ button.primary:hover, a.button.primary:hover {
     padding: 0;
     outline: none;
 }
+
+
+#secondPage #navigation-links button.active::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    background: #aaaaaa;
+    border-radius: 50%;
+}
+
 
 #secondPage #navigation-links .back-to-list {
     margin-right: 10px;
