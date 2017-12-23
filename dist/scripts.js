@@ -1,7 +1,3 @@
-// https://www.mapbox.com/help/custom-markers-gl-js/
-// https://www.mapbox.com/mapbox-gl-js/example/flyto/
-
-
 (function() {
     var places = [
         {
@@ -216,11 +212,6 @@
         }
     ];
 
-    // var geojson = {
-    //     type: 'FeatureCollection',
-    //     features: []
-    // };
-
     var currentPlace = null;
 
     // Create map
@@ -248,44 +239,60 @@
      * Create the architecture about a place
      */
     var createPlace = function(place) {
-        var html = '<div id="place-description-' + place.id + '" style="display: none;">';
-        html += '<button type="button" class="back-to-list">Retour</button>';
-        html += '<h1>' + place.title + '</h1>';
-        html += '<p>' + place.description + '</p>';
-        html += '<div class="place-description-pictures">';
-        for (var i = 0, l = place.photos.length; i < l; i++) {
-            html += '<img alt="" src="' + place.photos[i].msrc + '"/>';
-        }
-        html += '</div>';
-        html += '<a class="button primary" href="' + place.url + '" target="_blank">En savoir plus</a>';
-        html += '</div>';
-        return html;
-    };
+        var placeDescription = document.createElement('div');
+        placeDescription.setAttribute('id', 'place-description-' + place.id);
+        placeDescription.setAttribute('class', 'place-description');
+        placeDescription.setAttribute('style', 'display: none;');
 
-    // var placeToGeoJSon = function(place) {
-    //     if ('lon' in place && 'lat' in place) {
-    //         geojson.features.push({
-    //             type: 'Feature',
-    //             geometry: {
-    //                 type: 'Point',
-    //                 coordinates: [place.lon, place.lat]
-    //             }
-    //         });
-    //     }
-    // }
+        var backToList = document.createElement('button');
+        backToList.setAttribute('type', 'button');
+        backToList.setAttribute('class', 'back-to-list');
+        backToList.innerHTML = '<svg class="left-arrow" viewBox="0 0 20 20"><path d="m335 274c0 3-1 5-3 7l-133 133c-2 2-5 3-7 3-2 0-5-1-7-3l-14-14c-2-2-3-4-3-7 0-2 1-5 3-6l112-113-112-112c-2-2-3-4-3-7 0-2 1-4 3-6l14-14c2-2 5-3 7-3 2 0 5 1 7 3l133 133c2 2 3 4 3 6z" transform="scale(0.046875 0.046875)"></path></svg> Retour';
+        placeDescription.appendChild(backToList);
+
+        var h1 = document.createElement('h1');
+        h1.appendChild(document.createTextNode(place.title));
+        placeDescription.appendChild(h1);
+
+        var p = document.createElement('p');
+        p.appendChild(document.createTextNode(place.description));
+        placeDescription.appendChild(p);
+
+        var placeDescriptionPictures = document.createElement('div');
+        var img;
+        for (var i = 0, l = place.photos.length; i < l; i++) {
+            img = document.createElement('img');
+            img.setAttribute('alt', '');
+            img.setAttribute('src', place.photos[i].msrc);
+            img.addEventListener('click', function() {
+                openPhotoGallery(place, i);
+            });
+            placeDescriptionPictures.appendChild(img);
+        }
+        placeDescription.appendChild(placeDescriptionPictures);
+
+        var link = document.createElement('a');
+        link.setAttribute('class', 'link button primary');
+        link.setAttribute('href', place.url);
+        link.setAttribute('target', '_blank');
+        link.appendChild(document.createTextNode('En savoir plus'));
+        placeDescription.appendChild(link);
+
+        return placeDescription;
+    };
 
     /**
      * Handle picture gallery
      */
-    var openPhotoGallery = function(place) {
+    var openPhotoGallery = function(place, el, index) {
         var pswpElement = document.querySelectorAll('.pswp')[0];
 
         // build items array
         var items = place.photos;
-
         var options = {
-            index: 0,
-            history: false
+            index: index ? index - 1 : 0,
+            history: false,
+            shareEl: false
         };
 
         // Initializes and opens PhotoSwipe
@@ -382,14 +389,14 @@
 
         // Add link to the menu
         placeDescriptionList = placeDescription.querySelector('#place-description-list');
-        placeDescriptionList.innerHTML += '<li><button type="button" data-place="' + place.id + '">' + place.id + '. ' + place.title + '</button></li>';
+        placeDescriptionList.innerHTML += '<li><button type="button" data-place="' + place.id + '">' + place.id + '. ' + place.title + '<svg class="right-arrow" viewBox="0 0 20 20"><path d="m335 274c0 3-1 5-3 7l-133 133c-2 2-5 3-7 3-2 0-5-1-7-3l-14-14c-2-2-3-4-3-7 0-2 1-5 3-6l112-113-112-112c-2-2-3-4-3-7 0-2 1-4 3-6l14-14c2-2 5-3 7-3 2 0 5 1 7 3l133 133c2 2 3 4 3 6z" transform="scale(0.046875 0.046875)"></path></svg></button></li>';
 
         // Add content div
-        placeDescription.innerHTML += createPlace(place);
+        placeDescription.appendChild(createPlace(place));
 
         // Add link in navigation
         navigationLinks = document.querySelector('#navigation-links');
-        navigationLinks.innerHTML += '<li><button type="button" data-place="' + place.id + '"></button></li>';
+        navigationLinks.innerHTML += '<li><button class="button-link" type="button" data-place="' + place.id + '"></button></li>';
 
         // Fill Geojson
         addMarker(place);

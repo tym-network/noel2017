@@ -11,6 +11,10 @@ body {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+button {
+    outline: none;
+}
+
 h1 {
     font-family: "Sacramento", cursive;
     font-weight: 100;
@@ -37,8 +41,13 @@ button.primary:hover, a.button.primary:hover {
 }
 
 #firstPage {
+    display: flex;
+    min-height: 100%;
     padding: 20px;
     font-weight: 100;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 #firstPage .container {
@@ -62,7 +71,7 @@ button.primary:hover, a.button.primary:hover {
     margin: 40px 0;
 }
 
-#secondPage {
+#second-page {
     position: relative;
     width: 100%;
     min-height: 100%;
@@ -70,46 +79,76 @@ button.primary:hover, a.button.primary:hover {
     padding-bottom: 50px;
 }
 
-#secondPageContainer {
+#second-page-container {
     position: relative;
     display: flex;
     flex-direction: row;
-    min-height: 100%;
+    min-height: 100vh;
+    margin-bottom: -50px;
 }
 
-#secondPage #place-description {
+#second-page p {
+    text-align: center;
+    font-size: 14px;
+}
+
+#second-page h1 {
+    margin: 14px 0;
+    text-align: center;
+}
+
+#second-page #place-description {
     width: 50%;
     min-height: 100%;
-    padding: 30px;
+    padding: 30px 30px 80px 30px;
     box-sizing: border-box;
     background: white;
 }
 
-#secondPage #place-description-list {
+#second-page #place-description-list {
     margin: 0;
     padding: 0;
     list-style-type: none;
 }
 
-#secondPage #place-description-list button {
+#second-page #place-description-list button {
+    position: relative;
     display: block;
-    padding: 0;
     width: 100%;
     margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
+    padding: 10px 24px 10px 10px;
+    font-size: 14px;
     background: #f0f0f0;
     color: #6e6e6e;
     border: none;
     text-align: left;
     border-radius: 6px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-#secondPage #place-description .back-to-list {
+#second-page #place-description-list button:hover {
+    background: #e3e3e3;
+}
+
+#second-page #place-description-list button .right-arrow {
+    position: absolute;
+    width: 16px;
+    right: 8px;
+    top: 8px;
+    fill: #8d8d8d;
+    transition: all 0.2s ease-in-out;
+}
+
+#second-page #place-description-list button:hover .right-arrow {
+    fill: #414141;
+}
+
+#second-page #place-description .back-to-list {
+    position: relative;
     display: block;
-    padding: 10px 20px;
-    background: #e5e5e5;
+    padding: 10px 20px 10px 30px;
+    background: #f0f0f0;
     border: none;
     border-radius: 20px;
     color: #606060;
@@ -117,9 +156,54 @@ button.primary:hover, a.button.primary:hover {
     text-align: left;
     cursor: pointer;
     outline: none;
+    transition: all 0.2s ease-in-out;
 }
 
-#secondPage #map {
+#second-page #place-description .back-to-list:hover {
+    background: #e3e3e3;
+}
+
+#second-page #place-description .back-to-list .left-arrow {
+    position: absolute;
+    width: 14px;
+    top: 13px;
+    left: 10px;
+    fill: gray;
+    transition: all 0.2s ease-in-out;
+}
+
+#second-page #place-description .back-to-list:hover .left-arrow {
+    fill: #414141;
+}
+
+#second-page div.place-description {
+    position: relative;
+    height: 100%;
+    padding-bottom: 70px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#second-page #place-description img {
+    margin: 5px;
+    border: 5px solid #f0f0f0;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+#second-page #place-description img:hover {
+    border-color: #9ccf36;
+}
+
+#second-page .link {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 10px 0;
+}
+
+#second-page #map {
     position: fixed;
     width: 50%;
     left: 50%;
@@ -128,7 +212,7 @@ button.primary:hover, a.button.primary:hover {
     box-sizing: border-box;
 }
 
-#secondPage #map .marker {
+#second-page #map .marker {
     background: url('img/pin.svg') no-repeat;
     background-size: contain;
     width: 20px;
@@ -136,7 +220,7 @@ button.primary:hover, a.button.primary:hover {
     cursor: pointer;
 }
 
-#secondPage #navigation {
+#second-page #navigation {
     position: fixed;
     width: 100%;
     height: 50px;
@@ -147,7 +231,7 @@ button.primary:hover, a.button.primary:hover {
     box-shadow: 0 0 10px #787878;
 }
 
-#secondPage #navigation-container {
+#second-page #navigation-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -156,7 +240,7 @@ button.primary:hover, a.button.primary:hover {
     margin: auto;
 }
 
-#secondPage #navigation .arrow-button {
+#second-page #navigation .arrow-button {
     height: 100%;
     padding: 0 20px;
     background: none;
@@ -165,17 +249,26 @@ button.primary:hover, a.button.primary:hover {
     cursor: pointer;
 }
 
-#secondPage #navigation-links {
+#second-page #navigation .arrow-button svg {
+    transition: all 0.2s ease-in-out;
+}
+
+#second-page #navigation .arrow-button:hover svg {
+    fill: #4e4e4e;
+}
+
+#second-page #navigation-links {
     display: flex;
     padding: 0;
     margin: 0;
     list-style-type: none;
 }
 
-#secondPage #navigation-links button {
+#second-page #navigation-links button.button-link {
     position: relative;
     cursor: pointer;
-    background: #d1d1d1;
+    background: none;
+    box-shadow: inset 0 0 0 1px #d1d1d1;
     border: none;
     border-radius: 50%;
     width: 14px;
@@ -183,28 +276,48 @@ button.primary:hover, a.button.primary:hover {
     margin: 0 2px;
     padding: 0;
     outline: none;
+    transition: all 0.2s ease-in-out;
 }
 
-
-#secondPage #navigation-links button.active::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 10px;
-    height: 10px;
-    background: #aaaaaa;
-    border-radius: 50%;
+#second-page #navigation-links button.button-link:hover {
+    box-shadow: inset 0 0 0 2px #d1d1d1;
 }
 
+#second-page #navigation-links button.button-link.active {
+    box-shadow: inset 0 0 0 4px #d1d1d1;
+    transform: scale(1.25);
+}
 
-#secondPage #navigation-links .back-to-list {
+#second-page #navigation-links .back-to-list {
+    position: relative;
     margin-right: 10px;
     background: none;
     border: none;
+    cursor: pointer;
+    outline: none;
 }
 
-#secondPage #navigation-links .back-to-list img {
+#second-page #navigation-links .back-to-list::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: #d1d1d1;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.2s ease-in-out;
+}
+
+#second-page #navigation-links .back-to-list:hover::after {
+    width: 6px;
+}
+
+#second-page #navigation-links .back-to-list.active::after {
+    width: 14px;
+}
+
+#second-page #navigation-links .back-to-list img {
     width: 14px;
 }
 
@@ -220,6 +333,21 @@ button.primary:hover, a.button.primary:hover {
 
 .left-arrow {
     transform: rotate(180deg);
+}
+
+@media (max-width: 900px) {
+    #second-page-container {
+        flex-direction: column-reverse;
+    }
+    #second-page #place-description {
+        width: 100vw;
+    }
+    #second-page #map {
+        position: relative;
+        width: 100vw;
+        height: 50vh;
+        left: 0;
+    }
 }
 
 @media (max-width: 640px) {
