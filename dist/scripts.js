@@ -12,4 +12,5 @@ showPlace(previousPlace);};var placeDescription=document.querySelector('#place-d
 var placeDescriptionButtons=document.querySelectorAll('#place-description-list li > button');for(var i=0,l=placeDescriptionButtons.length;i<l;i++){placeDescriptionButtons[i].addEventListener('click',function(){var placeId=this.getAttribute('data-place');showPlace(placeId);});}
 var placeDescriptionBack=document.querySelectorAll('#place-description .back-to-list');for(var i=0,l=placeDescriptionBack.length;i<l;i++){placeDescriptionBack[i].addEventListener('click',function(){showPlace();});}
 var navigationLinks=document.querySelectorAll('#navigation-links button');for(var i=0,l=navigationLinks.length;i<l;i++){navigationLinks[i].addEventListener('click',function(){var placeId=this.getAttribute('data-place');showPlace(placeId);});}
-map.resize();document.querySelector('#navigation .arrow-button.previous').addEventListener('click',previousPlace);document.querySelector('#navigation .arrow-button.next').addEventListener('click',nextPlace);}());
+map.resize();map.fitBounds([[-3.9,46.2],[8.8,50.5]],{duration:0})
+document.querySelector('#navigation .arrow-button.previous').addEventListener('click',previousPlace);document.querySelector('#navigation .arrow-button.next').addEventListener('click',nextPlace);}());

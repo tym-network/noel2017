@@ -254,6 +254,7 @@
     }
 
     map.resize();
+    map.fitBounds([[-3.9, 46.2], [8.8, 50.5]], { duration: 0 })
 
     document.querySelector('#navigation .arrow-button.previous').addEventListener('click', previousPlace);
     document.querySelector('#navigation .arrow-button.next').addEventListener('click', nextPlace);
