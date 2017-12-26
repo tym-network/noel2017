@@ -18,7 +18,6 @@
      */
     var places = window.data.places;
     var currentPlace = null;
-    var currentPlaceElement = null;
 
     // Create map
     var map = new mapboxgl.Map({
@@ -108,19 +107,35 @@
     /**
      * Transitionend handler
      */
-    var transitionendHandler = function(e) {
-        if (e.target == document.querySelector('#place-description') && e.propertyName === 'transform') {
-            currentPlaceElement.setAttribute("style", "display: none;");
-            document.querySelector('#place-description').removeEventListener('transitionend', transitionendHandler);
+    var backToListTransitionendHandler = function(currentPlaceElement) {
+        return function (e) {
+            if (e.target == document.querySelector('#place-description') && e.propertyName === 'transform') {
+                currentPlaceElement.setAttribute("style", "display: none;");
+                document.querySelector('#place-description').removeEventListener('transitionend', arguments.callee);
+            }
         }
+    };
+
+    /**
+     * Transitionend handler
+     */
+    var betweenPlacesTransitionendHandler = function(currentPlaceElement, placeElement) {
+        return function (e) {
+            if (e.target == placeElement && e.propertyName === 'opacity') {
+                currentPlaceElement.setAttribute("style", "display: none;");
+                placeElement.classList.remove("show");
+                document.querySelector('#place-description').removeEventListener('transitionend', arguments.callee);
+            }
+        };
     };
 
     /**
      * Show place with the given id or the list if null is given
      */
     var showPlace = function(id) {
-        var currentNavigationLink = null,
+        var currentPlaceElement = null,
             placeElement = null,
+            currentNavigationLink = null,
             navigationLink = null,
             place;
 
@@ -144,15 +159,22 @@
             navigationLink = document.querySelector('#navigation-links button[data-place=""]');
         }
 
-        if (currentPlace && id) {
-            // Change from one place to another
-            currentPlaceElement.setAttribute("style", "display: none;");
+        // Show transition
+        if (id && currentPlace) {
+            // Switch between places (opacity)
+            document.querySelector('#place-description').addEventListener('transitionend', betweenPlacesTransitionendHandler(currentPlaceElement, placeElement));
+            placeElement.classList.add("show");
         } else if (currentPlace) {
-            // Go back to list, show transition
-            document.querySelector('#place-description').addEventListener('transitionend', transitionendHandler);
+            // Go back to list
+            document.querySelector('#place-description').addEventListener('transitionend', backToListTransitionendHandler(currentPlaceElement));
         }
         currentNavigationLink.classList.remove("active");
         placeElement.setAttribute("style", "display: block;");
+        if (id && currentPlace) {
+            setTimeout(function() {
+                placeElement.setAttribute("style", "display: block;opacity: 1;");
+            }, 1);
+        }
         navigationLink.classList.add("active");
         if (id) {
             document.querySelector('#place-description').classList.add('show-description');
@@ -162,13 +184,17 @@
         currentPlace = id;
         map.resize();
 
-        map.flyTo({
-            center: [
-                place ? place.lon : 2.197,
-                place ? place.lat : 46.514
-            ],
-            zoom: place ? 9 : 5
-        });
+        if (id) {
+            map.flyTo({
+                center: [
+                    place ? place.lon : 2.197,
+                    place ? place.lat : 46.514
+                ],
+                zoom: place ? 9 : 5
+            });
+        } else {
+            map.fitBounds([[-3.9, 46.2], [8.8, 50.5]])
+        }
     };
 
     var addMarker = function(place) {
@@ -206,7 +232,7 @@
      */
 
     // Add correct divs
-    var placeDescription = document.querySelector('#place-description');
+    var placeDescription = document.querySelector('#place-description-container');
     for (var i = 0, l = places.length; i < l; i++) {
         var place = places[i],
             placeDescriptionList,
