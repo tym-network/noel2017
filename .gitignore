@@ -1,3 +1,4 @@
 .git
 .sass-cache
 .gulp-scss-cache
+node_modules/
