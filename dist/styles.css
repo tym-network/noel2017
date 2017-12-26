@@ -179,7 +179,7 @@ button.primary:hover, a.button.primary:hover {
 #second-page div.place-description {
     position: relative;
     height: 100%;
-    padding-bottom: 70px;
+    padding-bottom: 80px;
     box-sizing: border-box;
     text-align: center;
 }
@@ -197,6 +197,10 @@ button.primary:hover, a.button.primary:hover {
 
 #second-page .link {
     position: absolute;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 200px;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
@@ -364,6 +368,18 @@ button.primary:hover, a.button.primary:hover {
         width: 100px;
         height: 100px;
         margin: 14px 0;
+    }
+}
+
+@media (max-width: 338px) {
+    #navigation .back-to-list {
+        display: none;
+    }
+}
+
+@media (max-width: 300px) {
+    #navigation #navigation-links {
+        display: none;
     }
 }
 
