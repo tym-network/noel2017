@@ -250,6 +250,10 @@ button.primary, a.button.primary {
         padding-bottom: 50px;
         box-sizing: border-box;
 
+        #map-container {
+            height: 100%;
+        }
+
         .marker {
             background: url('img/pin.svg') no-repeat;
             background-size: contain;
@@ -378,6 +382,7 @@ button.primary, a.button.primary {
     #second-page {
         #second-page-container {
             flex-direction: column-reverse;
+            overflow-x: hidden;
 
             #place-description {
                 width: 200vw;
@@ -403,6 +408,7 @@ button.primary, a.button.primary {
             width: 100vw;
             height: 50vh;
             left: 0;
+            padding-bottom: 0;
         }
     }
 }

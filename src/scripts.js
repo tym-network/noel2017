@@ -22,9 +22,9 @@
 
     // Create map
     var map = new mapboxgl.Map({
-        container: 'map',
+        container: 'map-container',
         style: 'mapbox://styles/mapbox/light-v9',
-        center: [2.197, 46.514],
+        center: [2.8530387, 48.6791841],
         zoom: 5
     });
 
