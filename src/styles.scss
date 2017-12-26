@@ -1,0 +1,450 @@
+$green: #9ccf36;
+
+html, body {
+    position: relative;
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: url('img/overlay.png') repeat $green;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+button {
+    outline: none;
+}
+
+h1 {
+    font-family: "Sacramento", cursive;
+    font-weight: 100;
+    font-size: 40px;
+    color: $green;
+}
+
+button.primary, a.button.primary {
+    display: inline-block;
+    background: none;
+    border: 1px solid $green;
+    border-radius: 20px;
+    padding: 10px 30px;
+    font-size: 16px;
+    color: $green;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    transition: background 0.2s ease-in-out;
+
+    &:hover {
+        background: rgba(156, 207, 54, 0.1);
+    }
+}
+
+.arrow {
+    width: 20px;
+}
+
+.left-arrow {
+    transform: rotate(180deg);
+}
+
+#first-page {
+    display: flex;
+    min-height: 100%;
+    padding: 20px;
+    font-weight: 100;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+
+    button {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        position: relative;
+        flex-grow: 1;
+        max-width: 500px;
+        background: white;
+        margin: auto;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        opacity: 0;
+        animation: appearIn 1s 1s ease-out forwards;
+
+        #gift-description {
+            margin: 40px 0;
+        }
+    }
+}
+
+#second-page {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 50px;
+
+    #second-page-container {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        min-height: 100vh;
+        margin-bottom: -50px;
+
+        p {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        h1 {
+            margin: 14px 0;
+            text-align: center;
+        }
+
+        #place-description {
+            width: 100vw;
+            min-height: 100%;
+            display: flex;
+            box-sizing: border-box;
+            padding-bottom: 50px;
+            background: white;
+            transform: translateX(0);
+            transition: all 0.8s ease-in-out;
+
+            &.show-description {
+                transform: translateX(-50%);
+
+                #place-description-intro {
+                    position: absolute;
+                    overflow: hidden;
+                    top: 0;
+                    max-height: 100%;
+                    bottom: 0;
+                }
+
+                div.place-description {
+                    left: 50%;
+                }
+            }
+
+            #place-description-list {
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+
+                button {
+                    position: relative;
+                    display: block;
+                    width: 100%;
+                    margin-bottom: 10px;
+                    padding: 10px 24px 10px 10px;
+                    font-size: 14px;
+                    background: #f0f0f0;
+                    color: #6e6e6e;
+                    border: none;
+                    text-align: left;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: all 0.2s ease-in-out;
+
+                    .right-arrow {
+                        position: absolute;
+                        width: 16px;
+                        right: 8px;
+                        top: 8px;
+                        fill: #8d8d8d;
+                        transition: all 0.2s ease-in-out;
+                    }
+
+                    &:hover {
+                        background: #e3e3e3;
+
+                        .right-arrow {
+                            fill: #414141;
+                        }
+                    }
+                }
+            }
+
+            #place-description-intro, div.place-description {
+                width: 50vw;
+                padding: 30px;
+                box-sizing: border-box;
+            }
+
+            div.place-description {
+                position: relative;
+                height: 100%;
+                padding-bottom: 80px;
+                box-sizing: border-box;
+                text-align: center;
+                background: white;
+
+                img {
+                    margin: 5px;
+                    border: 5px solid #f0f0f0;
+                    cursor: pointer;
+                    transition: 0.2s ease-in-out;
+
+                    &:hover {
+                        border-color: $green;
+                    }
+                }
+
+                .link {
+                    position: absolute;
+                    display: block;
+                    box-sizing: border-box;
+                    width: 100%;
+                    max-width: 200px;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    margin: 20px 0;
+                }
+
+                .back-to-list {
+                    position: relative;
+                    display: block;
+                    padding: 10px 20px 10px 30px;
+                    background: #f0f0f0;
+                    border: none;
+                    border-radius: 20px;
+                    color: #606060;
+                    font-size: 12px;
+                    text-align: left;
+                    cursor: pointer;
+                    outline: none;
+                    transition: all 0.2s ease-in-out;
+
+                    .left-arrow {
+                        position: absolute;
+                        width: 14px;
+                        top: 13px;
+                        left: 10px;
+                        fill: gray;
+                        transition: all 0.2s ease-in-out;
+                    }
+
+                    &:hover {
+                        background: #e3e3e3;
+
+                        .left-arrow {
+                            fill: #414141;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #map {
+        position: fixed;
+        width: 50%;
+        left: 50%;
+        height: 100%;
+        padding-bottom: 50px;
+        box-sizing: border-box;
+
+        .marker {
+            background: url('img/pin.svg') no-repeat;
+            background-size: contain;
+            width: 20px;
+            height: 29px;
+            cursor: pointer;
+        }
+    }
+
+    #navigation {
+        position: fixed;
+        width: 100%;
+        height: 50px;
+        bottom: 0;
+        left: 0;
+        z-index: 10;
+        background: white;
+        box-shadow: 0 0 10px #787878;
+
+        #navigation-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1090px;
+            height: 100%;
+            margin: auto;
+
+            .arrow-button {
+                height: 100%;
+                padding: 0 20px;
+                background: none;
+                border: none;
+                outline: none;
+                cursor: pointer;
+
+                svg {
+                    transition: all 0.2s ease-in-out;
+                }
+
+                &:hover {
+                    svg {
+                        fill: #4e4e4e;
+                    }
+                }
+            }
+
+
+            #navigation-links {
+                display: flex;
+                padding: 0;
+                margin: 0;
+                list-style-type: none;
+
+                button.button-link {
+                    position: relative;
+                    cursor: pointer;
+                    background: none;
+                    box-shadow: inset 0 0 0 1px #d1d1d1;
+                    border: none;
+                    border-radius: 50%;
+                    width: 14px;
+                    height: 14px;
+                    margin: 0 2px;
+                    padding: 0;
+                    outline: none;
+                    transition: all 0.2s ease-in-out;
+
+                    &:hover {
+                        box-shadow: inset 0 0 0 2px #d1d1d1;
+                    }
+
+                    &.active {
+                        box-shadow: inset 0 0 0 4px #d1d1d1;
+                        transform: scale(1.25);
+                    }
+                }
+
+                button.back-to-list {
+                    position: relative;
+                    margin-right: 10px;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    outline: none;
+
+                    img {
+                        width: 14px;
+                    }
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        bottom: 0;
+                        width: 0;
+                        height: 1px;
+                        background: #d1d1d1;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        transition: all 0.2s ease-in-out;
+                    }
+
+                    &:hover {
+                        &::after {
+                            width: 6px;
+                        }
+                    }
+
+                    &.active {
+                        &::after {
+                            width: 14px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#logo {
+    width: 150px;
+    height: 150px;
+    margin: 30px 0 20px 0;
+}
+
+@media (max-width: 900px) {
+    #second-page {
+        #second-page-container {
+            flex-direction: column-reverse;
+
+            #place-description {
+                width: 200vw;
+
+                #place-description-intro, .place-description {
+                    width: 100vw;
+                }
+
+                div.place-description {
+                    width: 100vw;
+                }
+
+                &.show-description {
+                    div.place-description {
+                        left: 50%;
+                    }
+                }
+            }
+        }
+
+        #map {
+            position: relative;
+            width: 100vw;
+            height: 50vh;
+            left: 0;
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    #first-page {
+        h1 {
+            font-size: 34px;
+            line-height: 40px;
+        }
+
+        #gift-description {
+            margin: 20px 0 30px;
+        }
+    }
+
+    #logo {
+        width: 100px;
+        height: 100px;
+        margin: 14px 0;
+    }
+}
+
+@media (max-width: 338px) {
+    #navigation .back-to-list {
+        display: none;
+    }
+}
+
+@media (max-width: 300px) {
+    #navigation #navigation-links {
+        display: none;
+    }
+}
+
+@keyframes appearIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
