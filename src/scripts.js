@@ -60,9 +60,10 @@
         var mainContentPosition = mainContentEl.getBoundingClientRect(),
             top = mainContentPosition.top + window.scrollY,
             left = mainContentPosition.left + window.scrollX,
-            width = mainContentEl.offsetWidth;
+            width = mainContentEl.offsetWidth,
+            height = mainContentEl.offsetHeight;
 
-        mainContentEl.setAttribute('style', 'position: absolute; top:' + top + 'px; left: ' + left + 'px; width: ' + width + 'px;');
+        mainContentEl.setAttribute('style', 'position: absolute; top:' + top + 'px; left: ' + left + 'px; width: ' + width + 'px; height: ' + height + 'px;');
 
         window.requestAnimationFrame(function() {
             if (window.matchMedia("(max-width: 900px)").matches) {
