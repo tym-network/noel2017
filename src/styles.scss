@@ -236,10 +236,14 @@ button.primary, a.button.primary {
 
             #place-description-intro, div.place-description {
                 width: 50vw;
-                margin-bottom: -50px;
-                padding: 30px 30px 80px 30px;
+                padding: 30px;
                 box-sizing: border-box;
                 background: white;
+            }
+
+            #place-description-intro {
+                margin-bottom: -50px;
+                padding: 30px 30px 80px 30px;
             }
 
             #place-description-intro-container {
