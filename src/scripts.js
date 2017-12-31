@@ -192,7 +192,8 @@
             place;
 
         if (id) {
-            place = getPlaceById(parseInt(id, 10));
+            id = parseInt(id, 10);
+            place = getPlaceById(id);
         }
 
         if (currentPlace) {
@@ -265,6 +266,7 @@
 
     var nextPlace = function() {
         var nextPlace = currentPlace + 1;
+
         if (nextPlace > places.length) {
             nextPlace = 1;
         }
