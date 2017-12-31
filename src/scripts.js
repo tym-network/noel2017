@@ -16,16 +16,67 @@
      *     lat: 48.2811742
      * ]
      */
-    var places = window.data.places;
-    var currentPlace = null;
 
-    // Create map
-    var map = new mapboxgl.Map({
-        container: 'map-container',
-        style: 'mapbox://styles/mapbox/light-v9',
-        center: [2.8530387, 48.6791841],
-        zoom: 5
-    });
+    // Store places and currently display place
+    var places = window.data.places,
+        currentPlace = null,
+        map;
+
+    var body = document.querySelector('body'),
+        mainContentEl = document.querySelector('#main-content'),
+        navigationEl = document.querySelector('#navigation');
+        mapEl = document.querySelector('#map');
+
+    /**
+     * Div is now on the left of the screen, switch the content
+     */
+    var mainContentTransitionEnd = function(e) {
+        var placeDescriptionIntroContainerEl = document.querySelector('#place-description-intro-container');
+
+        if (e.target == mainContentEl && e.propertyName === 'left') {
+            mainContentEl.removeEventListener('transitionend', mainContentTransitionEnd);
+            body.classList.remove('welcome');
+            mainContentEl.classList.remove('move-down-phone');
+            mainContentEl.classList.remove('move-left-desktop');
+            body.classList.add('places');
+            navigationEl.setAttribute('style', 'transform: translateY(200%) rotate(10deg);');
+            mapEl.setAttribute('style', 'transform: translateX(100%) rotate(10deg);');
+            placeDescriptionIntroContainerEl.setAttribute('style', 'opacity: 0;');
+
+            initSecondPage();
+
+            setTimeout(function() {
+                navigationEl.removeAttribute('style');
+                mapEl.removeAttribute('style');
+                placeDescriptionIntroContainerEl.removeAttribute('style');
+            }, 0);
+        }
+    }
+
+    /**
+     * Handles the animation from the first to the second page
+     */
+    var displaySecondPage = function() {
+        var mainContentPosition = mainContentEl.getBoundingClientRect(),
+            top = mainContentPosition.top + window.scrollY,
+            left = mainContentPosition.left + window.scrollX,
+            width = mainContentEl.offsetWidth;
+
+        mainContentEl.setAttribute('style', 'position: absolute; top:' + top + 'px; left: ' + left + 'px; width: ' + width + 'px;');
+
+        window.requestAnimationFrame(function() {
+            if (window.matchMedia("(max-width: 900px)").matches) {
+                mainContentEl.classList.add('move-down-phone');
+            } else {
+                mainContentEl.classList.add('move-left-desktop');
+            }
+
+            window.requestAnimationFrame(function() {
+                mainContentEl.addEventListener('transitionend', mainContentTransitionEnd);
+                mainContentEl.removeAttribute('style');
+            });
+        });
+    };
 
     var getPlaceById = function(id) {
         var place = null;
@@ -110,7 +161,7 @@
     var backToListTransitionendHandler = function(currentPlaceElement) {
         return function (e) {
             if (e.target == document.querySelector('#place-description') && e.propertyName === 'transform') {
-                currentPlaceElement.setAttribute("style", "display: none;");
+                currentPlaceElement.setAttribute('style', 'display: none;');
                 document.querySelector('#place-description').removeEventListener('transitionend', arguments.callee);
             }
         }
@@ -122,8 +173,8 @@
     var betweenPlacesTransitionendHandler = function(currentPlaceElement, placeElement) {
         return function (e) {
             if (e.target == placeElement && e.propertyName === 'opacity') {
-                currentPlaceElement.setAttribute("style", "display: none;");
-                placeElement.classList.remove("show");
+                currentPlaceElement.setAttribute('style', 'display: none;');
+                placeElement.classList.remove('show');
                 document.querySelector('#place-description').removeEventListener('transitionend', arguments.callee);
             }
         };
@@ -163,19 +214,19 @@
         if (id && currentPlace) {
             // Switch between places (opacity)
             document.querySelector('#place-description').addEventListener('transitionend', betweenPlacesTransitionendHandler(currentPlaceElement, placeElement));
-            placeElement.classList.add("show");
+            placeElement.classList.add('show');
         } else if (currentPlace) {
             // Go back to list
             document.querySelector('#place-description').addEventListener('transitionend', backToListTransitionendHandler(currentPlaceElement));
         }
-        currentNavigationLink.classList.remove("active");
-        placeElement.setAttribute("style", "display: block;");
+        currentNavigationLink.classList.remove('active');
+        placeElement.setAttribute('style', 'display: block;');
         if (id && currentPlace) {
             setTimeout(function() {
-                placeElement.setAttribute("style", "display: block;opacity: 1;");
+                placeElement.setAttribute('style', 'display: block;opacity: 1;');
             }, 1);
         }
-        navigationLink.classList.add("active");
+        navigationLink.classList.add('active');
         if (id) {
             document.querySelector('#place-description').classList.add('show-description');
         } else {
@@ -227,61 +278,73 @@
         showPlace(previousPlace);
     };
 
-    /*
-     * Display the different places and handle switch between them
-     */
-
-    // Add correct divs
-    var placeDescription = document.querySelector('#place-description-container');
-    for (var i = 0, l = places.length; i < l; i++) {
-        var place = places[i],
-            placeDescriptionList,
-            navigationLinks;
-
-        // Add link to the menu
-        placeDescriptionList = placeDescription.querySelector('#place-description-list');
-        placeDescriptionList.innerHTML += '<li><button type="button" data-place="' + place.id + '">' + place.id + '. ' + place.title + '<svg class="right-arrow" viewBox="0 0 20 20"><path d="m335 274c0 3-1 5-3 7l-133 133c-2 2-5 3-7 3-2 0-5-1-7-3l-14-14c-2-2-3-4-3-7 0-2 1-5 3-6l112-113-112-112c-2-2-3-4-3-7 0-2 1-4 3-6l14-14c2-2 5-3 7-3 2 0 5 1 7 3l133 133c2 2 3 4 3 6z" transform="scale(0.046875 0.046875)"></path></svg></button></li>';
-
-        // Add content div
-        placeDescription.appendChild(createPlace(place));
-
-        // Add link in navigation
-        navigationLinks = document.querySelector('#navigation-links');
-        navigationLinks.innerHTML += '<li><button class="button-link" type="button" data-place="' + place.id + '"></button></li>';
-
-        // Fill Geojson
-        addMarker(place);
-    }
-
-    // Handle button to see each place's description
-    var placeDescriptionButtons = document.querySelectorAll('#place-description-list li > button');
-    for (var i = 0, l = placeDescriptionButtons.length; i < l; i++) {
-        placeDescriptionButtons[i].addEventListener('click', function() {
-            var placeId = this.getAttribute('data-place');
-            showPlace(placeId);
+    var initSecondPage = function() {
+        // Create the map
+        map = new mapboxgl.Map({
+            container: 'map-container',
+            style: 'mapbox://styles/mapbox/light-v9',
+            center: [2.8530387, 48.6791841],
+            zoom: 5
         });
+
+        /*
+        * Display the different places and handle switch between them
+        */
+
+        // Add correct divs
+        var placeDescription = document.querySelector('#place-description-container');
+        for (var i = 0, l = places.length; i < l; i++) {
+            var place = places[i],
+                placeDescriptionList,
+                navigationLinks;
+
+            // Add link to the menu
+            placeDescriptionList = placeDescription.querySelector('#place-description-list');
+            placeDescriptionList.innerHTML += '<li><button type="button" data-place="' + place.id + '">' + place.id + '. ' + place.title + '<svg class="right-arrow" viewBox="0 0 20 20"><path d="m335 274c0 3-1 5-3 7l-133 133c-2 2-5 3-7 3-2 0-5-1-7-3l-14-14c-2-2-3-4-3-7 0-2 1-5 3-6l112-113-112-112c-2-2-3-4-3-7 0-2 1-4 3-6l14-14c2-2 5-3 7-3 2 0 5 1 7 3l133 133c2 2 3 4 3 6z" transform="scale(0.046875 0.046875)"></path></svg></button></li>';
+
+            // Add content div
+            placeDescription.appendChild(createPlace(place));
+
+            // Add link in navigation
+            navigationLinks = document.querySelector('#navigation-links');
+            navigationLinks.innerHTML += '<li><button class="button-link" type="button" data-place="' + place.id + '"></button></li>';
+
+            // Fill Geojson
+            addMarker(place);
+        }
+
+        // Handle button to see each place's description
+        var placeDescriptionButtons = document.querySelectorAll('#place-description-list li > button');
+        for (var i = 0, l = placeDescriptionButtons.length; i < l; i++) {
+            placeDescriptionButtons[i].addEventListener('click', function() {
+                var placeId = this.getAttribute('data-place');
+                showPlace(placeId);
+            });
+        }
+
+        // Handle back button
+        var placeDescriptionBack = document.querySelectorAll('#place-description .back-to-list');
+        for (var i = 0, l = placeDescriptionBack.length; i < l; i++) {
+            placeDescriptionBack[i].addEventListener('click', function() {
+                showPlace();
+            });
+        }
+
+        // Handle navigation links
+        var navigationLinks = document.querySelectorAll('#navigation-links button');
+        for (var i = 0, l = navigationLinks.length; i < l; i++) {
+            navigationLinks[i].addEventListener('click', function() {
+                var placeId = this.getAttribute('data-place');
+                showPlace(placeId);
+            });
+        }
+
+        map.resize();
+        map.fitBounds([[-3.9, 46.2], [8.8, 50.5]], { duration: 0 })
+
+        document.querySelector('#navigation .arrow-button.previous').addEventListener('click', previousPlace);
+        document.querySelector('#navigation .arrow-button.next').addEventListener('click', nextPlace);
     }
 
-    // Handle back button
-    var placeDescriptionBack = document.querySelectorAll('#place-description .back-to-list');
-    for (var i = 0, l = placeDescriptionBack.length; i < l; i++) {
-        placeDescriptionBack[i].addEventListener('click', function() {
-            showPlace();
-        });
-    }
-
-    // Handle navigation links
-    var navigationLinks = document.querySelectorAll('#navigation-links button');
-    for (var i = 0, l = navigationLinks.length; i < l; i++) {
-        navigationLinks[i].addEventListener('click', function() {
-            var placeId = this.getAttribute('data-place');
-            showPlace(placeId);
-        });
-    }
-
-    map.resize();
-    map.fitBounds([[-3.9, 46.2], [8.8, 50.5]], { duration: 0 })
-
-    document.querySelector('#navigation .arrow-button.previous').addEventListener('click', previousPlace);
-    document.querySelector('#navigation .arrow-button.next').addEventListener('click', nextPlace);
+    document.querySelector('.display-places').addEventListener('click', displaySecondPage);
 }());

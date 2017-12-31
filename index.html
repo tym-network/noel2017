@@ -7,31 +7,100 @@
         <meta name="description" content="Merry Christmas 2017">
         <meta name="author" content="Théotime Loiseau">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link href='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
         <link rel="stylesheet" href="dist/styles.css">
+        <link href='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
+        <link rel="stylesheet" href="dist/photoswipe/photoswipe.css">
+        <link rel="stylesheet" href="dist/photoswipe/default-skin/default-skin.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Sacramento" rel="stylesheet">
         <link rel="icon" type="image/png" sizes="32x32" href="dist/img/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="96x96" href="dist/img/favicon-96x96.png">
         <link rel="icon" type="image/png" sizes="16x16" href="dist/img/favicon-16x16.png">
     </head>
 
-    <body>
-        <div id="first-page">
-            <div class="container">
+    <body class="welcome">
+        <div id="main-content">
+            <div id="first-page" class="container">
                 <img id="logo" src="dist/img/logo.svg" alt=""/>
                 <h1>Soirée en Terre Incongrue</h1>
                 <div id="gift-description">
                     <p>Ce Noël, vous partez en week-end! Mais ce n'est pas le Formule 1 de Dijon qui vous attend. Vous partez pour une nuit à deux dans un endroit insolite de votre choix. Roulotte, yourte, tente suspendue, quelque chose me dit que vous vous souviendrez de cette nuit.</p>
                     <p>Joyeux Noël 2017! </p>
                 </div>
-                <a href="index2.html" class="button primary">Découvrir</a>
+                <button type="button" class="primary display-places">Découvrir</button>
             </div>
-
+            <div id="second-page" class="container">
+                <div id="place-description">
+                    <div id="place-description-container">
+                        <div id="place-description-intro">
+                            <div id="place-description-intro-container">
+                                <h1>Soirée en Terre Incongrue</h1>
+                                <p>Voici une petite sélection de logements originaux que je vous propose. N'hésitez pas à suggérer d'autres idées si vous en avez envie!</p>
+                                <ul id="place-description-list">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="map">
+                    <div id="map-container"></div>
+                </div>
+            </div>
         </div>
 
+        <div id="navigation">
+            <div id="navigation-container">
+                <button type="button" class="arrow-button previous">
+                    <svg class="arrow left-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.49 31.49" fill="#d1d1d1"><path d="M21.205 5.007a1.112 1.112 0 0 0-1.587 0 1.12 1.12 0 0 0 0 1.571l8.047 8.047H1.111A1.106 1.106 0 0 0 0 15.737c0 .619.492 1.127 1.111 1.127h26.554l-8.047 8.032c-.429.444-.429 1.159 0 1.587a1.112 1.112 0 0 0 1.587 0l9.952-9.952a1.093 1.093 0 0 0 0-1.571l-9.952-9.953z"/></svg>
+                </button>
+                <ul id="navigation-links">
+                    <li><button class="back-to-list active" data-place=""><img alt="Back to place's list" src="dist/img/home.svg"/></button></li>
+                </ul>
+                <button type="button" class="arrow-button next">
+                    <svg class="arrow right-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.49 31.49" fill="#d1d1d1"><path d="M21.205 5.007a1.112 1.112 0 0 0-1.587 0 1.12 1.12 0 0 0 0 1.571l8.047 8.047H1.111A1.106 1.106 0 0 0 0 15.737c0 .619.492 1.127 1.111 1.127h26.554l-8.047 8.032c-.429.444-.429 1.159 0 1.587a1.112 1.112 0 0 0 1.587 0l9.952-9.952a1.093 1.093 0 0 0 0-1.571l-9.952-9.953z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="pswp__bg"></div>
+            <div class="pswp__scroll-wrap">
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+                <div class="pswp__ui pswp__ui--hidden">
+                    <div class="pswp__top-bar">
+                        <div class="pswp__counter"></div>
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
+                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                    </button>
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                    </button>
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
         <script src="dist/config.js"></script>
-        <script src="dist/scripts.js"></script>
+        <script src="src/scripts.js"></script>
+        <script async src="dist/photoswipe/photoswipe.min.js"></script>
+        <script async src="dist/photoswipe/photoswipe-ui-default.min.js"></script>
     </body>
 </html>
